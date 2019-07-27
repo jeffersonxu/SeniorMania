@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Senior Mania</title>
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+</head>
+<body>
+
+<div class="container">
+	<div id="login">
+		<h1 class="header">Senior Mania</h1>
+		<div id="errorMsg" class="alert alert-danger" role="alert" style="display: none;">
+		</div>
+
+		<div class="form-group">
+			<label class="text-muted" for="email">Email address</label>
+			<input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+		</div>
+		<div class="form-group">
+			<label class="text-muted" for="password">Password</label>
+			<input type="password" class="form-control" id="password" aria-describedby="emailHelp">
+		</div>
+		<button id="btnLogin" type="submit" class="btn btn-primary">Login</button>
+	</div>
+
+	<div id="main">
+		<h1 class="header">Senior Mania</h1>
+		<button id="btnLogout" class="btn btn-dark hide">Log Out</button>
+		<div class="row">
+			<div class="col-md-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				<a class="nav-link active" id="v-pills-rules-tab" data-toggle="pill" href="#v-pills-rules" role="tab" aria-controls="v-pills-rules" aria-selected="true">Rules</a>
+				<a class="nav-link" id="v-pills-challenges-tab" data-toggle="pill" href="#v-pills-challenges" role="tab" aria-controls="v-pills-challenges" aria-selected="false">Challenges</a>
+				<a class="nav-link" id="v-pills-team-tab" data-toggle="pill" href="#v-pills-team" role="tab" aria-controls="v-pills-team" aria-selected="false">Team Info</a>
+				<a class="nav-link" id="v-pills-leaderboard-tab" data-toggle="pill" href="#v-pills-leaderboard" role="tab" aria-controls="v-pills-leaderboard" aria-selected="false">Leaderboard</a>
+			</div>
+
+			<div class="col-md-9 tab-content" id="v-pills-tabContent">
+				<div class="tab-pane fade show active" id="v-pills-rules" role="tabpanel" aria-labelledby="v-pills-rules-tab">
+					<h3>Rules</h3>
+				  	<p>Team must have at least <span class="red">5 members</span> but <span class="red">no more than 12 </span><span class="video">(no exceptions)</span></p>
+
+				  	<h3>Team Challenges</h3>
+				  	<p>Everyone must be present to get points under these guidelines</p>
+				  	<ul>
+				  		<li>A team of <span class="red">5-9 members</span>: <b>ONE</b> member can miss the challenge</li>
+				  		<li>A team of <span class="red">10-12 members</span>: <b>TWO</b> members can miss the challenge</li>
+				  		<li>Each team challenge can only be done once </li>
+				  	</ul>
+
+				  	<h3>Individual Challenges</h3>
+				  	<p>Any member can complete for points</p>
+				  	<ul>
+				  		<li>Ex: If 3 people do a 100 point event, that is 300 points for the team</li>
+				  		<li>You as an individual can only do each individual event <b>ONCE</b></li>
+				  	</ul>
+
+				  	<h3>PICTURE <i class="fas fa-camera"></i> OR IT DIDN'T HAPPEN</h3>
+				  	<p>All team members must be visible in photo/video unless otherwise noted (i.e. video specified)</p>
+				</div>
+
+				<div class="tab-pane fade" id="v-pills-challenges" role="tabpanel" aria-labelledby="v-pills-challenges-tab">
+			  		<h3>Team Challenges</h3>
+			  		<div class="custom-control custom-checkbox">
+			  			<input type="checkbox" class="custom-control-input" id="btSports" onclick="return false;">
+			  			<label class="custom-control-label" for="btSports">Go to a BT sports game <span class="red">(300 points)</span></label>
+			  		</div>
+
+			  		<div class="custom-control custom-checkbox">
+			  			<input type="checkbox" class="custom-control-input" id="snowco" onclick="return false;">
+			  			<label class="custom-control-label" for="snowco">Go to SNOWCO in sweats: Your team got <span id="snowcoLabel" class="red"></span></label>
+			  		</div>
+
+			  		<div class="custom-control custom-checkbox">
+			  			<input type="checkbox" class="custom-control-input" id="allSigns" onclick="return false;">
+			  			<label class="custom-control-label" for="allSigns">Take a picture with a sign from every town in Bergen County <span class="red">(75 points per sign, 5250 total)</span></label>
+			  			<p>Number of signs: <span class="bold" id="townSigns"></span></p>
+			  		</div>
+
+			  		<p>Get a picture with:</p>
+			  		<ul>
+		  				<div class="custom-control custom-checkbox">
+		  					<input type="checkbox" class="custom-control-input" id="mendelsohn" onclick="return false;">
+		  					<label class="custom-control-label" for="mendelsohn">Mrs. Mendelsohn <span class="red">(75 points)</span></label>
+		  				</div>
+
+		  				<div class="custom-control custom-checkbox">
+		  					<input type="checkbox" class="custom-control-input" id="bath" onclick="return false;">
+		  					<label class="custom-control-label" for="bath">Dr. Bath <span class="red">(75 points)</span></label>
+		  				</div>
+
+		  				<div class="custom-control custom-checkbox">
+		  					<input type="checkbox" class="custom-control-input" id="davis" onclick="return false;">
+		  					<label class="custom-control-label" for="davis">Mr. Davis <span class="red">(75 points)</span></label>
+		  				</div>
+
+		  				<div class="custom-control custom-checkbox">
+		  					<input type="checkbox" class="custom-control-input" id="pinke" onclick="return false;">
+		  					<label class="custom-control-label" for="pinke">Mrs. Pinke <span class="red">(75 points)</span></label>
+		  				</div>
+
+		  				<div class="custom-control custom-checkbox">
+		  					<input type="checkbox" class="custom-control-input" id="lynch" onclick="return false;">
+		  					<label class="custom-control-label" for="lynch">Mr. Lynch <span class="red">(300 points)</span></label>
+		  				</div>
+	  				</ul>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="polarBearPlunge" onclick="return false;">
+	  					<label class="custom-control-label" for="polarBearPlunge">Participate in an organized polar bear plunge challenge <span class="red">(1000 points)</span> <span class="video">video required</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="bathtub" onclick="return false;">
+	  					<label class="custom-control-label" for="bathtub">Take a picture of the team in a bathtub <span class="red">(200 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="faceMasks" onclick="return false;">
+	  					<label class="custom-control-label" for="faceMasks">Face Masks with the team <span class="red">(200 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="rios" onclick="return false;">
+	  					<label class="custom-control-label" for="rios">Take a picture with Ms. Rios at 8:00 AM <span class="red">(300 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="pool1" onclick="return false;">
+	  					<label class="custom-control-label" for="pool1">Jump into a pool fully clothed <span class="red">(300 points)</span></label>
+
+	  					<li style="list-style-type: none;">
+	  						<div class="custom-control custom-checkbox">
+	  							<input type="checkbox" class="custom-control-input" id="pool2" onclick="return false;">
+	  							<label class="custom-control-label" for="pool2">If team lands in pool at same time; single attempt, clothes must be dry <span class="red">(600 points)</span></label>
+	  						</div>
+	  					</li>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="postIts" onclick="return false;">
+	  					<label class="custom-control-label" for="postIts">Put 6 post-its on a stranger’s back at a grocery store without them noticing <span class="red">(850 points)</span> <span class="video">video required</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="dunkin" onclick="return false;">
+	  					<label class="custom-control-label" for="dunkin">Bring Dunkin to a Starbucks for twenty minutes <span class="video">(no purchases at starbucks allowed)</span> <span class="red">(200 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="portaPotty" onclick="return false;">
+	  					<label class="custom-control-label" for="portaPotty">Team selfie in a porta potty that is not the one in lower lot <span class="red">(500 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="whoppers" onclick="return false;">
+	  					<label class="custom-control-label" for="whoppers">Everyone orders whoppers at McDonald’s <span class="red">(300 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="policeOfficer" onclick="return false;">
+	  					<label class="custom-control-label" for="policeOfficer">Picture with a police officer <span class="red">(200 points)</span> <span class="video">cannot be one on campus</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="disney1" onclick="return false;">
+	  					<label class="custom-control-label" for="disney1">Team singing a Disney song in a restaurant for at least 20 seconds <span class="red">(400 points)</span> <span class="video">video required</span></label>
+
+	  					<li style="list-style-type: none;">
+	  						<div class="custom-control custom-checkbox">
+	  							<input type="checkbox" class="custom-control-input" id="disney2" onclick="return false;">
+	  							<label class="custom-control-label" for="disney2">If you can get the waiter/waitress to sing along <span class="red">(800 points)</span></label>
+	  						</div>
+	  					</li>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="tree" onclick="return false;">
+	  					<label class="custom-control-label" for="tree">Get the entire team in a tree <span class="red">(500 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="fashionShow" onclick="return false;">
+	  					<label class="custom-control-label" for="fashionShow">Attend the fashion show <span class="red">(1000 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="pyramid" onclick="return false;">
+	  					<label class="custom-control-label" for="pyramid">Take a pyramid picture <span class="red">(400 points)</span></label>
+	  					<p class="subtext">If your team is 10-12 people, you can have two pyramids</p>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="pies" onclick="return false;">
+	  					<label class="custom-control-label" for="pies">One half of the team pies the other half <span class="red">(200 points)</span></label>
+	  					<p class="subtext">If you have an odd number of teammates, one member pies his/herself</p>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="dyeHair" onclick="return false;">
+	  					<label class="custom-control-label" for="dyeHair">Dye entire team’s hair same color <span class="red">(300 points)</span> temporary/washable is acceptable</label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="bostonMarket" onclick="return false;">
+	  					<label class="custom-control-label" for="bostonMarket">Order every side and a whole chicken at Boston Market <span class="red">(500 points)</span> <span class="video">video required</span></label>
+	  					<p class="subtext">Time restriction: Must complete in (17-amount of members) minutes</p>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="strangerPic" onclick="return false;">
+	  					<label class="custom-control-label" for="strangerPic">Get a stranger’s signature and picture with the stranger <span class="red">(300 points)</span></label>
+	  				</div>
+
+	  				<div class="custom-control custom-checkbox">
+	  					<input type="checkbox" class="custom-control-input" id="bloomingdalePic" onclick="return false;">
+	  					<label class="custom-control-label" for="bloomingdalePic">Take a picture from top of Bloomingdale’s parking garage (Riverside Mall) <span class="red">(300 points)</span></label>
+	  				</div>
+
+			  		<h3>Individual Challenges</h3>
+			  		<ul id="individual">
+			  			<li>Saran Wrap your entire car <span class="red">(150 points per car)</span></li>
+			  			<p>Number of people: <span class="bold" id="saranWrap"></span></p>
+
+			  			<li>Crack an egg on your head <span class="red">(50 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="egg"></span></p>
+
+			  			<li>Kiss a statue for minimum 10 seconds <span class="red">(50 points)</span> <span class="video">video required</span></li>
+			  			<p>Number of people: <span class="bold" id="kissStatue"></span></p>
+
+			  			<li>Get a stranger to hold your hand <span class="red">(25 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="strangerHand"></span></p>
+
+			  			<li>Get a stranger to hug you <span class="red">(50 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="strangerHug"></span></p>
+
+			  			<li>Get a stranger to high five you back <span class="red">(10 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="strangerFive"></span></p>
+
+			  			<li>Get a stranger to give you a piggyback ride for at least 10 seconds <span class="red">(100 points per member)</span> <span class="video">video required</span></li>
+			  			<p>Number of people: <span class="bold" id="strangerPiggyback"></span></p>
+
+			  			<li>Shave head (M) / Cut Hair 4 in (F) <span class="red">(500 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="shaveHead"></span></p>
+
+			  			<li>Shave your eyebrows <span class="red">(1000 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="shaveEyebrows"></span></p>
+
+			  			<li>Sit with unknown family at restaurant <span class="red">(75 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="unknownFamily"></span></p>
+
+			  			<li>Go to a fast food drive thru and pay in pennies <span class="red">(100 points)</span></li>
+			  			<p>Number of people: <span class="bold" id="fastFood"></span></p>
+
+			  			<li>Order an ice cream, grab it by the ice cream part not the cone <span class="red">(100 points)</span> <span class="video">video required</span></li>
+			  			<p>Number of people: <span class="bold" id="iceCream"></span></p>
+
+			  			<li>Get $3 worth of gas <span class="red">(75 points per car)</span></li>
+			  			<p>Number of people: <span class="bold" id="gas"></span></p>
+
+			  			<li>Eat 12 peeps in 1 minute <span class="red">(100 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="peeps"></span></p>
+
+			  			<li>Ice bucket challenge in T < 20ºF <span class="red">(100 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="iceBucket"></span></p>
+
+			  			<li>Tip 100%, $15 minimum <span class="red">(100 points per member)</span></li>
+			  			<p>Number of people: <span class="bold" id="tip"></span></p>
+			  		</ul>
+
+			  		<h3>Monthly Challenges</h3>
+			  		<p class="red">500 points each</p>
+			  		<div class="row">
+				  			<div id="october" class="card col-md-4">
+				  				<div class="card-body">
+					  			    <h5 class="card-title">October</h5>
+					  			    <h6 class="card-subtitle mb-2 text-muted">Tourists</h6>
+					  			    <p class="card-text">Group members come to school dressed like tourists (camera, glasses, hats, etc)</p>
+				  			  	</div>
+				  			</div>
+
+				  			<div id="november" class="card col-md-4">
+				  				<div class="card-body">
+					  			    <h5 class="card-title">November</h5>
+					  			    <h6 class="card-subtitle mb-2 text-muted">Group</h6>
+					  			    <p class="card-text">Every member MUST be wearing the same shirt/outfit</p>
+				  			  	</div>
+				  			</div>
+
+			  			<div id="december" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">December</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">Formal</h6>
+				  			    <p class="card-text">~But in reverse!~ <br>Girls wear suits and guys wear dresses</p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="january" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">January</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">Beach</h6>
+				  			    <p class="card-text"><span class="video">Appropriate bathing suits/ beachwear</span><br>Get a picture of squad in the snow with bathing suits on = 2x points</p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="february" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">February</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">Onesies and Piñatas</h6>
+				  			    <p class="card-text">Wear Onesies to school ~don’t forget the piñata~ <br><span class="video">video required</span> </p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="march" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">March</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">All Black</h6>
+				  			    <p class="card-text">Wear all black: everything black (no other colors, neck to feet black)</p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="april" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">April</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">Happy Holidays</h6>
+				  			    <p class="card-text">Make a freshman’s day by dressing up in santa hats and giving a random freshman a present<br><span class="video">video required</span></p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="may" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">May</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">Halloween in May</h6>
+				  			    <p class="card-text">Costumes, decorations, trick or treating (the whole deal)</p>
+			  			  	</div>
+			  			</div>
+
+			  			<div id="june" class="card col-md-4">
+			  				<div class="card-body">
+				  			    <h5 class="card-title">June</h5>
+				  			    <h6 class="card-subtitle mb-2 text-muted">HSM</h6>
+				  			    <p class="card-text">Videotape squad singing a High School Musical song in the hall. Get other students involved = 2x points</p>
+			  			  	</div>
+			  			</div>
+			  		</div>
+				</div>
+
+				<div class="tab-pane fade" id="v-pills-team" role="tabpanel" aria-labelledby="v-pills-team-tab">
+				 	<h3 id="teamHeader">Team Information</h3>
+				 	<p>Team Name: <span class="bold" id="team"></span></p>
+				 	<p>Points: <span class="bold" id="point"></span></p>
+				 	<p>Email: <span class="bold" id="teamEmail"></span></p>
+				 	<p>Members: <span class="bold" id="members"></span></p>
+				 	<p>Group Number: <span class="bold" id="groupNumber"></span></p>
+
+				 	<button id="resetPass" type="button" class="btn btn-warning">Reset Password</button>
+
+				  	<h3>How to Submit</h3>
+				  	<ol>
+					  	<li>Gather the quality pictures from the event completed and/or the video if was specified </li>
+					  	<li>Don’t stage stranger challenges (it ruins the fun)</li>
+					  	<li>Email or share the proof to <a href="mailto:seniormania19@gmail.com">seniormania19@gmail.com</a> with a description of what the event was </li>
+					  	<li>Class Council will keep all of your pictures/videos in a Google folder and will add your points to a spreadsheet</li>
+					  	<li>Points for teams will be updated on a week-to-week basis and can be seen in the "Team Info" section</li>
+				  	</ol>
+
+				  	<h3>Final Notes</h3>
+				  	<ul>
+				  		<li>If you find any bugs with the site (try refreshing first)</li>
+				  		<li>If that doesn't work, either yell at Jeff what the problem is or email him at <a href="mailto:me@jeffersonxu.com">me@jeffersonxu.com</a> what the issue is</li>
+				  	</ul>
+				  	<h3>HAVE FUN, BE RECKLESS, EMBRACE THE JOURNEY</h3>
+				</div>
+
+				<div class="tab-pane fade" id="v-pills-leaderboard" role="tabpanel" aria-labelledby="v-pills-leaderboard-tab">
+					<h3>Leaderboard</h3>
+					<p>Last updated: May 14th (we're in the endgame now)</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">Created with <i class="fas fa-heart"></i> from Jeff's labor and amazing coding abilities <i class="fas fa-code"></i></p>
+  </div>
+</footer>
+
+<script type="text/javascript" src="app.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
